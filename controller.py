@@ -2,14 +2,18 @@ import pygame
 import sys, signal
 
 from Player import Player
+from View import View
 
 class Controller:
     def __init__(self, display):
         self.display = display
         
     def loop(self):
-        #clock = pygame.time.Clock()
+        clock = pygame.time.Clock()
+        
         self.player = Player()
+        self.view = View(self.display)
+        self.view.Welcome()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -19,7 +23,7 @@ class Controller:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s :
                         print("play file")
-                        self.player.PlayFile("rise.mp3")
+                        self.player.PlayFile("rise.mp3", 0.4)
                     if event.key == pygame.K_p :
                         print("play / pause")
                         self.player.PlayPause()
@@ -30,6 +34,7 @@ class Controller:
                         print("volume -")
                         self.player.VolumeDown()
                 #print(event)
-
-        pygame.display.update()
+            #pygame.display.update()
+            clock.tick(30)
+        #pygame.display.update()
         #clock.tick(30)

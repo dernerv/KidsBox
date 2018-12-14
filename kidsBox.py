@@ -11,7 +11,8 @@ def main():
     else:
         display = pygame.display.set_mode((480, 320))
         pygame.display.set_caption('KidsBox')
-
+    pygame.mouse.set_visible(False)
+    
     control = Controller(display)
     control.loop()
 
