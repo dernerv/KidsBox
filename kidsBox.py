@@ -1,10 +1,16 @@
 import pygame
+import os
+import platform
 
 from controller import Controller
 
 def main():
-    display = pygame.display.set_mode((800,600))
-    pygame.display.set_caption('test')
+    if platform.system() != 'Windows':
+        os.environ["SDL_FBDEV"] = "/dev/fb1"
+        display = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
+    else:
+        display = pygame.display.set_mode((480, 320))
+        pygame.display.set_caption('KidsBox')
 
     control = Controller(display)
     control.loop()
