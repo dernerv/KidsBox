@@ -30,18 +30,35 @@ class View:
 
         pygame.display.flip()
 
-    def NewMedia(self, image, titel, position):
+    def NewMedia(self, image, titel, album, track, position, fulltime):
         self.image = image
         self.titel = titel
         self.position = position
         
-        self.display.fill((110,110,110))
-        picture = pygame.transform.smoothscale(image, (300, 300))
+        pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
+        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(9, 9, 242, 242))
+        
+        # Cover
+        picture = pygame.transform.smoothscale(image, (240, 240))
         self.display.blit(picture,(10,10))
-        textTitel = self.fontSmall.render(self.titel, True, (150, 150, 150))
-        self.display.blit(textTitel,(320,10))
+        # Track
+        textTitel = self.fontSmall.render("#" + str(track), True, (200, 200, 200))
+        self.display.blit(textTitel,(270,80))
+        # Titel
+        textTitel = self.fontSmall.render(titel, True, (200, 200, 200))
+        self.display.blit(textTitel,(270,110))
+        # Album
+        textTitel = self.fontSmall.render(album, True, (200, 200, 200))
+        self.display.blit(textTitel,(270,140))
+
         pygame.display.flip()
+        self.DrawPositionBar(position, fulltime)
     
+    def DrawPositionBar(self, position, fulltime):
+        pygame.draw.rect(self.display, (100, 100, 100), pygame.Rect(0, self.display.get_height()-60, self.display.get_width(), 60))
+        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(20, self.display.get_height()-50, self.display.get_width()-40, 40))
+        pygame.display.flip()
+
     def UpdateTitle(self, titel, position):
         self.titel = titel
         self.position = position

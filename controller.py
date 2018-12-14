@@ -4,6 +4,7 @@ import sys, signal
 from Player import Player
 from View import View
 from time import sleep
+from MusicRepo import MusicRepo
 
 class Controller:
     def __init__(self, display):
@@ -11,9 +12,11 @@ class Controller:
         self.player = Player()
         self.view = View(self.display)
         self.view.Welcome()
+        self.repo = MusicRepo("C:\\Users\\nerv\\sandbox")
         
     def loop(self):
         clock = pygame.time.Clock()
+        print(self.repo.GetSubFolders())
 
         while True:
             for event in pygame.event.get():
@@ -25,8 +28,8 @@ class Controller:
                     if event.key == pygame.K_s :
                         print("play file")
                         self.player.PlayFile("rise.mp3", 0.4)
-                        image = pygame.image.load("C:\\Users\\nerv\\sandbox\\Album1\\cover.png")
-                        self.view.NewMedia(image, "Test Titel", 0)
+                        image = self.repo.GetCover(self.repo.GetSubFolders()[1])
+                        self.view.NewMedia(image, "Test Titel", "Album", 5, 0, 3.5)
                     if event.key == pygame.K_p :
                         print("play / pause")
                         self.player.PlayPause()
