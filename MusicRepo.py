@@ -1,16 +1,10 @@
 import pygame
 import os
-import eyed3
-
-class MusicMetaData:
-     def __init__(self, track, title, artist, album):
-        self.track = track
-        self.title = title
-        self.artist = artist
-        self.album = album
+#import eyed3
 
 class MusicRepo:
-    def __init__(self, rootFolder):
+    def __init__(self, rootFolder, vlcInstance):
+        self.vlcInstance = vlcInstance
         self.rootFolder = rootFolder
 
     def GetSubFolders(self):
@@ -26,6 +20,14 @@ class MusicRepo:
                     return pygame.image.load(fileName)
     
     def GetInfo(self, filename):
-        audiofile = eyed3.load(filename)
-        return MusicMetaData(audiofile.tag.track_num, audiofile.tag.title, audiofile.tag.artist, audiofile.tag.album)
+        self.media = self.vlcInstance.media_new(filename)
+        self.media.parse()
+        return MusicMetaData(self.media.get_meta(5), self.media.get_meta(0), self.media.get_meta(1), self.media.get_meta(4))
 
+
+class MusicMetaData:
+     def __init__(self, track, title, artist, album):
+        self.track = track
+        self.title = title
+        self.artist = artist
+        self.album = album

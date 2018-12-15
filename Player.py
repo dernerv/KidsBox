@@ -1,17 +1,19 @@
 import vlc
+#from Meta import vlc
 
 class Player:
 
-    def __init__(self):
-        self.vlcInstance = vlc.Instance()
+    def __init__(self, vlcInstance):
+        self.vlcInstance = vlcInstance
         self.vlcPlayer = self.vlcInstance.media_player_new()
         self.volume = 50
 
-    def PlayFile(self, fileName, position):
+    def SetFile(self, fileName, position):
         self.media = self.vlcInstance.media_new(fileName)
         self.vlcPlayer.set_media(self.media)
         self.vlcPlayer.play()
         self.vlcPlayer.set_position(position)
+        self.vlcPlayer.pause()
 
     def PlayPause(self):
         if self.vlcPlayer.is_playing():

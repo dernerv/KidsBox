@@ -30,10 +30,11 @@ class View:
 
         pygame.display.flip()
 
-    def NewMedia(self, image, titel, album, track, position, fulltime):
+    def NewMedia(self, image, titel, artist, album, track, position, fulltime):
         self.image = image
         self.titel = titel
         self.position = position
+        self.artist = artist
         
         pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
         pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(9, 9, 242, 242))
@@ -43,13 +44,16 @@ class View:
         self.display.blit(picture,(10,10))
         # Track
         textTitel = self.fontSmall.render("#" + str(track), True, (200, 200, 200))
-        self.display.blit(textTitel,(270,80))
+        self.display.blit(textTitel,(270,70))
         # Titel
         textTitel = self.fontSmall.render(titel, True, (200, 200, 200))
-        self.display.blit(textTitel,(270,110))
+        self.display.blit(textTitel,(270,100))
+        # Artits
+        textTitel = self.fontSmall.render(artist, True, (200, 200, 200))
+        self.display.blit(textTitel,(270,130))
         # Album
         textTitel = self.fontSmall.render(album, True, (200, 200, 200))
-        self.display.blit(textTitel,(270,140))
+        self.display.blit(textTitel,(270,160))
 
         pygame.display.flip()
         self.DrawPositionBar(position, fulltime)
@@ -69,3 +73,22 @@ class View:
     def ShowVolume(self, volume):
         self.volume = volume
     
+    def AlbumSelection(self, image1, image2, image3):
+        self.display.fill((0,0,0))
+        pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
+        
+        
+        # Cover
+        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(9, 9, 222, 222))
+        picture = pygame.transform.smoothscale(image1, (220, 220))
+        self.display.blit(picture,(10,10))
+       
+        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(249, 9, 222, 222))
+        picture = pygame.transform.smoothscale(image3, (220, 220))
+        self.display.blit(picture,(250,10))
+
+        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(108, 39, 262, 262))
+        picture = pygame.transform.smoothscale(image2, (260, 260))
+        self.display.blit(picture,(109,40))
+
+        pygame.display.flip()

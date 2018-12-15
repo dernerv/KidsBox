@@ -1,5 +1,6 @@
 import pygame
 import sys, signal
+import vlc
 
 from Player import Player
 from View import View
@@ -9,10 +10,11 @@ from MusicRepo import MusicRepo
 class Controller:
     def __init__(self, display):
         self.display = display
-        self.player = Player()
+        self.vlcInstance = vlc.Instance()
+        self.player = Player(self.vlcInstance)
         self.view = View(self.display)
         self.view.Welcome()
-        self.repo = MusicRepo("C:\\Users\\nerv\\sandbox")
+        self.repo = MusicRepo("C:\\Users\\nerv\\sandbox", self.vlcInstance)
         
     def loop(self):
         clock = pygame.time.Clock()
@@ -27,14 +29,19 @@ class Controller:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s :
                         print("play file")
-                        filename = "rise.mp3"
-                        self.player.PlayFile(filename, 0.4)
-                        print(self.repo.GetInfo(filename))
+                        filename = "chemie.mp3"
+                        self.player.SetFile(filename, 0.4)
+                        meta = self.repo.GetInfo(filename)
                         image = self.repo.GetCover(self.repo.GetSubFolders()[1])
-                        self.view.NewMedia(image, "Test Titel", "Album", 5, 0, 3.5)
+                        self.view.NewMedia(image, meta.title, meta.artist, meta.album, meta.track, 0, 3.5)
                     if event.key == pygame.K_p :
                         print("play / pause")
-                        self.player.PlayPause()
+                    if event.key == pygame.K_a :
+                        print("album")
+                        image1 = self.repo.GetCover(self.repo.GetSubFolders()[0])
+                        image2 = self.repo.GetCover(self.repo.GetSubFolders()[1])
+                        image3 = self.repo.GetCover(self.repo.GetSubFolders()[2])
+                        self.view.AlbumSelection(image1, image2, image3)
                     if event.key == pygame.K_u :
                         print("volume +")
                         self.player.VolumeUp()
