@@ -27,7 +27,9 @@ class Controller:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s :
                         print("play file")
-                        self.player.PlayFile("rise.mp3", 0.4)
+                        filename = "rise.mp3"
+                        self.player.PlayFile(filename, 0.4)
+                        print(self.repo.GetInfo(filename))
                         image = self.repo.GetCover(self.repo.GetSubFolders()[1])
                         self.view.NewMedia(image, "Test Titel", "Album", 5, 0, 3.5)
                     if event.key == pygame.K_p :
