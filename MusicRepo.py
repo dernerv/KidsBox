@@ -11,6 +11,16 @@ class MusicRepo:
         return [name for name in os.listdir(self.rootFolder)
             if os.path.isdir(os.path.join(self.rootFolder, name))]
 
+    def GetFiles(self, foldername):
+        files = []
+        subfolder = os.path.join(self.rootFolder, foldername)
+        for name in os.listdir(subfolder):
+            fileName = os.path.join(subfolder, name)
+            if os.path.isfile(fileName):
+                if (name.endswith(".mp3")):
+                    files.append(fileName)
+        return files     
+
     def GetCover(self, foldername):
         subfolder = os.path.join(self.rootFolder, foldername)
         for name in os.listdir(subfolder):

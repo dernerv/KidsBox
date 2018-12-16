@@ -13,7 +13,7 @@ class Player:
         self.vlcPlayer.set_media(self.media)
         self.vlcPlayer.play()
         self.vlcPlayer.set_position(position)
-        self.vlcPlayer.pause()
+        #self.vlcPlayer.pause()
 
     def PlayPause(self):
         if self.vlcPlayer.is_playing():

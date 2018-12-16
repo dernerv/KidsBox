@@ -9,6 +9,7 @@ class View:
                    # if you want to use this module.
         self.font = pygame.font.SysFont('Century Gothic', 40)
         self.fontSmall = pygame.font.SysFont('Century Gothic', 16) 
+        self.frameColor = (255, 255, 255)
     
     def Welcome(self):
         textKidsBox = self.font.render('Kids Box', True, (255, 255, 255))
@@ -37,7 +38,7 @@ class View:
         self.artist = artist
         
         pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
-        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(9, 9, 242, 242))
+        pygame.draw.rect(self.display, self.frameColor, pygame.Rect(9, 9, 242, 242))
         
         # Cover
         picture = pygame.transform.smoothscale(image, (240, 240))
@@ -77,18 +78,22 @@ class View:
         self.display.fill((0,0,0))
         pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
         
-        
+        coverSize = 220
+        frameSize = coverSize + 2
+        centerX = self.display.get_width() / 2
         # Cover
-        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(9, 9, 222, 222))
-        picture = pygame.transform.smoothscale(image1, (220, 220))
+        pygame.draw.rect(self.display, self.frameColor, pygame.Rect(9, 9, frameSize, frameSize))
+        picture = pygame.transform.smoothscale(image1, (coverSize, coverSize))
         self.display.blit(picture,(10,10))
        
-        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(249, 9, 222, 222))
-        picture = pygame.transform.smoothscale(image3, (220, 220))
+        pygame.draw.rect(self.display, self.frameColor, pygame.Rect(249, 9, frameSize, frameSize))
+        picture = pygame.transform.smoothscale(image3, (coverSize, coverSize))
         self.display.blit(picture,(250,10))
 
-        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(108, 39, 262, 262))
-        picture = pygame.transform.smoothscale(image2, (260, 260))
+        centerCoverSize = coverSize + 40
+        centerFrame = centerCoverSize + 2
+        pygame.draw.rect(self.display, self.frameColor, pygame.Rect(108, 39, centerFrame, centerFrame))
+        picture = pygame.transform.smoothscale(image2, (centerCoverSize, centerCoverSize))
         self.display.blit(picture,(109,40))
 
         pygame.display.flip()
