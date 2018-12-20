@@ -1,7 +1,7 @@
 import pygame
 import sys, signal
 import vlc
-import json
+
 import time
 
 from Player import Player
@@ -16,6 +16,7 @@ class Controller:
         self.media_index = 0
         self.media_position = 0
         self.lastUpdate = 0.0
+        self.keyDownTime = 0
         self.albumMode = True
         self.rootFolder = "C:\\Users\\nerv\\sandbox"
 
@@ -23,9 +24,19 @@ class Controller:
         self.view.Welcome()
         self.vlcInstance = vlc.Instance()
         self.player = Player(self.vlcInstance)
+        self.player.set_event_end_callback(self.media_end_reached)
+        self.player.set_event_position_changed_callback(self.media_position_changed)
         self.repo = MusicRepo(self.rootFolder, self.vlcInstance)
-        self.folders = self.repo.GetSubFolders()
+        self.folders = self.repo.GetAlbums()
         self.noCoverImage = pygame.image.load("no-cover.png")
+
+    def media_end_reached(self, event):
+        print("end reached")
+        self.NextMediaFile()
+    
+    def media_position_changed(self, event):
+        print("position changed")
+        self.SavePosition()
 
     def loop(self):
         clock = pygame.time.Clock()
@@ -35,8 +46,10 @@ class Controller:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit(0)
-                    
                 if event.type == pygame.KEYDOWN:
+                    self.keyDownTime = time.time()
+
+                if event.type == pygame.KEYUP:
                     if event.key == pygame.K_q :
                         pygame.quit()
                         sys.exit(0)
@@ -46,13 +59,18 @@ class Controller:
                         self.ShowAlbums()
                     if event.key == pygame.K_p :
                         print("enter / play-pause")
-                        if self.albumMode:
-                            fileAndPosition = self.LoadPositionAndFile()
-                            self.media_index = fileAndPosition['fileIndex']
-                            self.media_position = fileAndPosition['position']
-                            self.PlayMediaFile()
-                        else:
-                            self.player.PlayPause()
+                        if time.time() > self.keyDownTime + 2:
+                            if not self.albumMode:
+                                self.media_position = 0
+                                self.PlayMediaFile()
+                        else: 
+                            if self.albumMode:
+                                fileAndPosition = self.repo.LoadPositionAndFile(self.album_index)
+                                self.media_index = fileAndPosition['fileIndex']
+                                self.media_position = fileAndPosition['position']
+                                self.PlayMediaFile()
+                            else:
+                                self.player.PlayPause()
                     if event.key == pygame.K_u :
                         print("volume +")
                         self.player.VolumeUp()
@@ -76,12 +94,16 @@ class Controller:
                                 self.album_index += 1
                             self.ShowAlbums()
                         else:
-                            size = self.repo.GetNumberOfFiles(self.folders[self.album_index])
-                            if self.media_index + 1 < size:
-                                self.media_index += 1
-                                self.PlayMediaFile()
+                            self.NextMediaFile()
             clock.tick(30)
-            self.SavePosition()
+            #self.SavePosition()
+
+    def NextMediaFile(self):
+        size = self.repo.GetNumberOfFiles(self.folders[self.album_index])
+        if self.media_index + 1 < size:
+            self.media_position = 0
+            self.media_index += 1
+            self.PlayMediaFile()
 
     def PlayMediaFile(self):
         fileName = self.repo.GetFiles(self.folders[self.album_index])[self.media_index]
@@ -94,27 +116,9 @@ class Controller:
     def SavePosition(self):
         if self.player.IsPlaying() :
             if time.time() > self.lastUpdate:
-                folder = self.folders[self.album_index]
                 self.media_position = self.player.GetPosition()
-                with open(self.rootFolder + "\\" + folder + "\\" + "position.json", "w") as write_file:
-                    data = {
-                        "fileIndex": self.media_index,
-                        "position": self.media_position
-                    }
-                    json.dump(data, write_file)
+                self.repo.SavePosition(self.album_index, self.media_index, self.media_position)
                 self.lastUpdate = time.time()
-    
-    def LoadPositionAndFile(self):
-        try:
-            with open(self.rootFolder + "\\" + self.folders[self.album_index] + "\\" + "position.json", "r") as read_file:
-                return json.load(read_file)
-        except:
-            self.media_index = 0
-            self.media_position = 0.0
-            return {
-                        "fileIndex": 0,
-                        "position": 0
-                    }
 
 
     def ShowAlbums(self):

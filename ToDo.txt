@@ -3,9 +3,10 @@
 
     Software
     * Liederauswahl in Album                                DONE
+    * Nach Lied Ende weiterspielen                          DONE
     * Vor/Zurückspulen (Langes drücken vor oder zurück)     
     * GPIOs benutzen (Buttons)
-    * Zurückstezen(Position Stop) (Langes drücken play)
+    * Zurückstezen(Position Stop) (Langes drücken play)     DONE
     * Fehlende oder defekte Positions datei                 DONE
     * Freigabe des Liederordners
     * OS aufspielen undkonfigurieren                        

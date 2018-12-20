@@ -1,12 +1,19 @@
 import vlc
-#from Meta import vlc
+from vlc import EventType
 
 class Player:
 
     def __init__(self, vlcInstance):
         self.vlcInstance = vlcInstance
         self.vlcPlayer = self.vlcInstance.media_player_new()
+        self.event_manager = self.vlcPlayer.event_manager()
         self.volume = 50
+
+    def set_event_end_callback(self, callback):
+        self.event_manager.event_attach(EventType.MediaPlayerEndReached, callback)
+
+    def set_event_position_changed_callback(self, callback):
+        self.event_manager.event_attach(EventType.MediaPlayerPositionChanged, callback)
 
     def SetFile(self, fileName, position):
         self.media = self.vlcInstance.media_new(fileName)
