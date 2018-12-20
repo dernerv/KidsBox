@@ -24,6 +24,9 @@ class Player:
     def GetPosition(self):
         return self.vlcPlayer.get_position()
 
+    def IsPlaying(self):
+        return self.vlcPlayer.is_playing()
+
     def Volume(self, volume):
         self.volume = volume
         self.vlcPlayer.audio_set_volume(self.volume)

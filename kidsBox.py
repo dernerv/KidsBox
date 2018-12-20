@@ -14,6 +14,7 @@ def main():
     pygame.mouse.set_visible(False)
     
     control = Controller(display)
+    control.setup()
     control.loop()
 
 if __name__ == '__main__':

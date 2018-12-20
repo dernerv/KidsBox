@@ -19,7 +19,10 @@ class MusicRepo:
             if os.path.isfile(fileName):
                 if (name.endswith(".mp3")):
                     files.append(fileName)
-        return files     
+        return files
+
+    def GetNumberOfFiles(self, foldername):    
+        return len(self.GetFiles(foldername))
 
     def GetCover(self, foldername):
         subfolder = os.path.join(self.rootFolder, foldername)

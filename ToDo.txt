@@ -1,0 +1,22 @@
+
+## KidsBox ToDo
+
+    Software
+    * Liederauswahl in Album                                DONE
+    * Vor/Zurückspulen (Langes drücken vor oder zurück)     
+    * GPIOs benutzen (Buttons)
+    * Zurückstezen(Position Stop) (Langes drücken play)
+    * Fehlende oder defekte Positions datei                 DONE
+    * Freigabe des Liederordners
+    * OS aufspielen undkonfigurieren                        
+
+    Hardare/Gehäuse
+    * SD-Karten besorgen                                    DONE
+    * Gehäuseboden in CAD + PI Halter + Verstärker
+    * Bildschrimhalterung
+    * Verkabelung
+        * Pi Header
+        * Display
+        * Verstärker
+    * Schrauben
+    * Dämmung
