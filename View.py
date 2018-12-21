@@ -60,8 +60,22 @@ class View:
         self.DrawPositionBar(position, fulltime)
     
     def DrawPositionBar(self, position, fulltime):
-        pygame.draw.rect(self.display, (100, 100, 100), pygame.Rect(0, self.display.get_height()-60, self.display.get_width(), 60))
-        pygame.draw.rect(self.display, (255, 255, 255), pygame.Rect(20, self.display.get_height()-50, self.display.get_width()-40, 40))
+        pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, self.display.get_height()-60, self.display.get_width(), 60))
+        pygame.draw.rect(self.display, (100, 100, 100), pygame.Rect(15, self.display.get_height()-45, self.display.get_width()-30, 30))
+        
+        # Progress position
+        if position <= 1.0:
+            pygame.draw.rect(self.display, (20, 20, 200), pygame.Rect(15, self.display.get_height()-45, (self.display.get_width()-30) * position , 30))
+
+        durationInSec = fulltime / 60000
+        position_in_sec =  durationInSec * position 
+        position_as_time_format = '{0:02.0f}:{1:02.0f}'.format(*divmod(position_in_sec * 60, 60))
+        positionText = self.fontSmall.render(position_as_time_format, True, (200, 200, 200))
+        self.display.blit(positionText,(20, self.display.get_height()-40))
+
+        duration_as_time_format = '{0:02.0f}:{1:02.0f}'.format(*divmod(durationInSec * 60, 60))
+        fulltimeText = self.fontSmall.render(duration_as_time_format, True, (200, 200, 200))
+        self.display.blit(fulltimeText,(self.display.get_width()- (fulltimeText.get_width() + 20), self.display.get_height()-40))
         pygame.display.flip()
 
     def UpdateTitle(self, titel, position):

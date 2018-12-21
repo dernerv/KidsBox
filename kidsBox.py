@@ -16,6 +16,7 @@ def main():
     control = Controller(display)
     control.setup()
     control.loop()
+    pygame.quit()
 
 if __name__ == '__main__':
     main()

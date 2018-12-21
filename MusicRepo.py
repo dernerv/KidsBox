@@ -36,8 +36,10 @@ class MusicRepo:
                     return pygame.image.load(fileName)
     
     def SavePosition(self, album_index, media_index, media_position):
-        folder = self.albums[album_index]
-        with open(self.rootFolder + "\\" + folder + "\\" + "position.json", "w") as write_file:
+        folder = self.GetAlbums()[album_index]
+        filename = self.rootFolder + "\\" + folder + "\\" + "position.json"
+        print("Save into file " + filename)
+        with open(filename, "w") as write_file:
             data = {
                 "fileIndex": media_index,
                 "position": media_position
@@ -46,11 +48,11 @@ class MusicRepo:
 
     def LoadPositionAndFile(self, album_index):
         try:
-            with open(self.rootFolder + "\\" + self.folders[album_index] + "\\" + "position.json", "r") as read_file:
+            filename = self.rootFolder + "\\" + self.GetAlbums()[album_index] + "\\" + "position.json"
+            print("Load file " + filename)
+            with open(filename, "r") as read_file:
                 return json.load(read_file)
         except:
-            self.media_index = 0
-            self.media_position = 0.0
             return {
                         "fileIndex": 0,
                         "position": 0
@@ -59,12 +61,13 @@ class MusicRepo:
     def GetInfo(self, filename):
         self.media = self.vlcInstance.media_new(filename)
         self.media.parse()
-        return MusicMetaData(self.media.get_meta(5), self.media.get_meta(0), self.media.get_meta(1), self.media.get_meta(4))
+        return MusicMetaData(self.media.get_meta(5), self.media.get_meta(0), self.media.get_meta(1), self.media.get_meta(4), self.media.get_duration())
 
 
 class MusicMetaData:
-     def __init__(self, track, title, artist, album):
+     def __init__(self, track, title, artist, album, duration):
         self.track = track
         self.title = title
         self.artist = artist
         self.album = album
+        self.duration = duration

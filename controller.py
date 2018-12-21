@@ -1,12 +1,16 @@
 import pygame
 import sys, signal
 import vlc
+import asyncio
 
 import time
+#import RPi.GPIO as GPIO
 
 from Player import Player
 from View import View
 from MusicRepo import MusicRepo
+from time import sleep
+
 
 class Controller:
     def __init__(self, display):
@@ -14,14 +18,19 @@ class Controller:
         self.view = View(self.display)
         self.album_index = 0
         self.media_index = 0
-        self.media_position = 0
+        self.media_position = 0.0
+        self.media_duration = 0.0
         self.lastUpdate = 0.0
         self.keyDownTime = 0
         self.albumMode = True
         self.rootFolder = "C:\\Users\\nerv\\sandbox"
+        self.ButtonPinPlay = 18
+        self.busy = False
 
     def setup(self):
         self.view.Welcome()
+        #GPIO.setmode(GPIO.BCM)
+        #GPIO.setup(self.ButtonPinPlay, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)
         self.vlcInstance = vlc.Instance()
         self.player = Player(self.vlcInstance)
         self.player.set_event_end_callback(self.media_end_reached)
@@ -32,20 +41,22 @@ class Controller:
 
     def media_end_reached(self, event):
         print("end reached")
-        self.NextMediaFile()
+        event = pygame.event.Event(pygame.KEYUP)
+        event.key = pygame.K_RIGHT
+        pygame.event.post(event)
+        #asyncio.create_task(self.NextMediaFile())
     
     def media_position_changed(self, event):
-        print("position changed")
-        self.SavePosition()
+        print("position changed")  
+        if not self.busy:
+            self.SavePosition()
 
     def loop(self):
-        clock = pygame.time.Clock()
         self.ShowAlbums()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit(0)
+                    return
                 if event.type == pygame.KEYDOWN:
                     self.keyDownTime = time.time()
 
@@ -86,6 +97,7 @@ class Controller:
                         else:
                             if self.media_index > 0:
                                 self.media_index -= 1
+                                self.media_position = 0
                                 self.PlayMediaFile()
                     if event.key == pygame.K_RIGHT :
                         print("rigth")
@@ -95,10 +107,9 @@ class Controller:
                             self.ShowAlbums()
                         else:
                             self.NextMediaFile()
-            clock.tick(30)
-            #self.SavePosition()
 
     def NextMediaFile(self):
+        self.busy = True
         size = self.repo.GetNumberOfFiles(self.folders[self.album_index])
         if self.media_index + 1 < size:
             self.media_position = 0
@@ -106,17 +117,22 @@ class Controller:
             self.PlayMediaFile()
 
     def PlayMediaFile(self):
+        self.busy = True
         fileName = self.repo.GetFiles(self.folders[self.album_index])[self.media_index]
         meta = self.repo.GetInfo(fileName)
         image = self.repo.GetCover(self.folders[self.album_index])
-        self.view.NewMedia(image, meta.title, meta.artist, meta.album, meta.track, 0, self.media_position)
+        self.media_duration = meta.duration
+        self.view.NewMedia(image, meta.title, meta.artist, meta.album, meta.track, meta.duration, self.media_position)
         self.player.SetFile(fileName, self.media_position)
         self.albumMode = False
+        self.busy = False
 
     def SavePosition(self):
         if self.player.IsPlaying() :
             if time.time() > self.lastUpdate:
                 self.media_position = self.player.GetPosition()
+                if not self.albumMode:
+                    self.view.DrawPositionBar(self.media_position, self.media_duration)
                 self.repo.SavePosition(self.album_index, self.media_index, self.media_position)
                 self.lastUpdate = time.time()
 

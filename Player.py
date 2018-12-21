@@ -16,11 +16,11 @@ class Player:
         self.event_manager.event_attach(EventType.MediaPlayerPositionChanged, callback)
 
     def SetFile(self, fileName, position):
+        self.vlcPlayer.stop()
         self.media = self.vlcInstance.media_new(fileName)
         self.vlcPlayer.set_media(self.media)
         self.vlcPlayer.play()
         self.vlcPlayer.set_position(position)
-        #self.vlcPlayer.pause()
 
     def PlayPause(self):
         if self.vlcPlayer.is_playing():
@@ -33,6 +33,9 @@ class Player:
 
     def IsPlaying(self):
         return self.vlcPlayer.is_playing()
+
+    def Stop(self):
+        return self.vlcPlayer.stop()
 
     def Volume(self, volume):
         self.volume = volume
