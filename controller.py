@@ -11,6 +11,16 @@ from View import View
 from MusicRepo import MusicRepo
 from time import sleep
 
+## Buttons
+BACK_BUTTON = 11
+PLAY_BUTTON = 12
+LEFT_BUTTON = 13
+RIGHT_BUTTON = 14
+
+VOLUME_UP = 15
+VOLUME_DOWN = 16
+
+BUTTON_LIST = {BACK_BUTTON, PLAY_BUTTON, LEFT_BUTTON, RIGHT_BUTTON, VOLUME_UP, VOLUME_DOWN}
 
 class Controller:
     def __init__(self, display):
@@ -24,13 +34,15 @@ class Controller:
         self.keyDownTime = 0
         self.albumMode = True
         self.rootFolder = "C:\\Users\\nerv\\sandbox"
-        self.ButtonPinPlay = 18
         self.busy = False
 
     def setup(self):
         self.view.Welcome()
         #GPIO.setmode(GPIO.BCM)
-        #GPIO.setup(self.ButtonPinPlay, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)
+        #for button in BUTTON_LIST:
+        #   GPIO.setup(button, GPIO.IN,  pull_up_down=GPIO.PUD_UP)
+        #   GPIO.add_event_detect(button, GPIO.RISING, callback=self.gpio_rising, bouncetime=100)
+        #   GPIO.add_event_detect(button, GPIO.Falling, callback=self.gpio_falling, bouncetime=100)
         self.vlcInstance = vlc.Instance()
         self.player = Player(self.vlcInstance)
         self.player.set_event_end_callback(self.media_end_reached)
@@ -39,12 +51,31 @@ class Controller:
         self.folders = self.repo.GetAlbums()
         self.noCoverImage = pygame.image.load("no-cover.png")
 
+    def gpio_rising(self, channel):
+        event = pygame.event.Event(pygame.KEYUP)
+        if channel == PLAY_BUTTON:  
+            event.key = pygame.K_p
+        if channel == LEFT_BUTTON:  
+            event.key = pygame.K_LEFT
+        if channel == RIGHT_BUTTON:  
+            event.key = pygame.K_RIGHT
+        if channel == BACK_BUTTON:  
+            event.key = pygame.K_ESCAPE
+        if channel == VOLUME_UP:  
+            event.key = pygame.K_UP
+        if channel == VOLUME_DOWN:  
+            event.key = pygame.K_DOWN
+        pygame.event.post(event)
+
+    def gpio_falling(self, channel):
+        event = pygame.event.Event(pygame.KEYDOWN)
+        pygame.event.post(event)
+
     def media_end_reached(self, event):
         print("end reached")
         event = pygame.event.Event(pygame.KEYUP)
         event.key = pygame.K_RIGHT
         pygame.event.post(event)
-        #asyncio.create_task(self.NextMediaFile())
     
     def media_position_changed(self, event):
         print("position changed")  
@@ -82,10 +113,10 @@ class Controller:
                                 self.PlayMediaFile()
                             else:
                                 self.player.PlayPause()
-                    if event.key == pygame.K_u :
+                    if event.key == pygame.K_UP :
                         print("volume +")
                         self.player.VolumeUp()
-                    if event.key == pygame.K_d :
+                    if event.key == pygame.K_DOWN :
                         print("volume -")
                         self.player.VolumeDown()
                     if event.key == pygame.K_LEFT :

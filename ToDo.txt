@@ -5,20 +5,26 @@
     * Liederauswahl in Album                                DONE
     * Nach Lied Ende weiterspielen                          DONE
     * Fortschrittsanzeige                                   DONE
-    * Vor/Zurückspulen (Langes drücken vor oder zurück)     
-    * GPIOs benutzen (Buttons)
     * Zurückstezen(Position Stop) (Langes drücken play)     DONE
     * Fehlende oder defekte Positions datei                 DONE
+    * GPIOs benutzen (Buttons)                              InProgress
     * Freigabe des Liederordners
-    * OS aufspielen undkonfigurieren                        
+    * OS aufspielen und konfigurieren                       InProgress
+
+        NiceToHave
+        * Volume anzeige
+        * Vor/Zurückspulen (Langes drücken vor oder zurück)                            
 
     Hardare/Gehäuse
     * SD-Karten besorgen                                    DONE
     * Gehäuseboden in CAD + PI Halter + Verstärker          DONE
     * Bildschrimhalterung
     * Verkabelung
-        * Pi Header
+        * Pi Header                                         DONE
         * Display
         * Verstärker
+        * Buttons
     * Schrauben
-    * Dämmung
+
+        NiceToHave
+        * Dämmung

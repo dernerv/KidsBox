@@ -43,11 +43,11 @@ class Player:
 
     def VolumeUp(self):
         if self.volume < 100:
-            self.volume += 1
+            self.volume += 4
         self.vlcPlayer.audio_set_volume(self.volume)
     
     def VolumeDown(self):
         if self.volume > 0:
-            self.volume -= 1
+            self.volume -= 4
         self.vlcPlayer.audio_set_volume(self.volume)
 
