@@ -7,6 +7,7 @@ class MusicRepo:
         self.vlcInstance = vlcInstance
         self.rootFolder = rootFolder
         self.albums = None
+        self.Covers = dict()
 
     def GetAlbums(self):
         if self.albums == None:
@@ -28,34 +29,42 @@ class MusicRepo:
         return len(self.GetFiles(foldername))
 
     def GetCover(self, foldername):
+        if foldername in self.Covers:
+            return self.Covers[foldername]
         subfolder = os.path.join(self.rootFolder, foldername)
         for name in os.listdir(subfolder):
             fileName = os.path.join(subfolder, name)
             if os.path.isfile(fileName):
                 if (name.endswith(".png")):
-                    return pygame.image.load(fileName)
+                    cover = pygame.image.load(fileName)
+                    self.Covers[foldername] = cover
+                    return cover
     
     def SavePosition(self, album_index, media_index, media_position):
         folder = self.GetAlbums()[album_index]
-        filename = self.rootFolder + "\\" + folder + "\\" + "position.json"
-        print("Save into file " + filename)
+        filename = self.rootFolder + "/" + folder + "/" + "position.json"
+        #print("Save into file " + filename)
         with open(filename, "w") as write_file:
             data = {
                 "fileIndex": media_index,
-                "position": media_position
+                "position": media_position,
+                "folder": folder
             }
             json.dump(data, write_file)
 
     def LoadPositionAndFile(self, album_index):
         try:
-            filename = self.rootFolder + "\\" + self.GetAlbums()[album_index] + "\\" + "position.json"
+            folder = self.GetAlbums()[album_index]
+            filename = self.rootFolder + "/" + folder + "/" + "position.json"
             print("Load file " + filename)
             with open(filename, "r") as read_file:
                 return json.load(read_file)
         except:
+            print("Loading failed")
             return {
                         "fileIndex": 0,
-                        "position": 0
+                        "position": 0,
+                        "folder": folder
                     }    
 
     def GetInfo(self, filename):

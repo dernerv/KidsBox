@@ -6,8 +6,9 @@ class Player:
     def __init__(self, vlcInstance):
         self.vlcInstance = vlcInstance
         self.vlcPlayer = self.vlcInstance.media_player_new()
+        
         self.event_manager = self.vlcPlayer.event_manager()
-        self.volume = 50
+        self.volume = self.vlcPlayer.audio_get_volume()
 
     def set_event_end_callback(self, callback):
         self.event_manager.event_attach(EventType.MediaPlayerEndReached, callback)
@@ -39,6 +40,12 @@ class Player:
 
     def Volume(self, volume):
         self.volume = volume
+        self.vlcPlayer.audio_set_volume(self.volume)
+
+    def Mute(self, volume):
+        self.vlcPlayer.audio_set_volume(0)
+
+    def UnMute(self, volume):
         self.vlcPlayer.audio_set_volume(self.volume)
 
     def VolumeUp(self):

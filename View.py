@@ -1,5 +1,8 @@
 import pygame
 
+COVER_POSITION_X = 15
+COVER_POSITION_Y = 15
+
 class View:
 
     def __init__(self, display):
@@ -38,11 +41,11 @@ class View:
         self.artist = artist
         
         pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
-        pygame.draw.rect(self.display, self.frameColor, pygame.Rect(9, 9, 242, 242))
+        pygame.draw.rect(self.display, self.frameColor, pygame.Rect(COVER_POSITION_X-1, COVER_POSITION_Y-1, 242, 242))
         
         # Cover
         picture = pygame.transform.smoothscale(image, (240, 240))
-        self.display.blit(picture,(10,10))
+        self.display.blit(picture,(COVER_POSITION_X, COVER_POSITION_Y))
         # Track
         textTitel = self.fontSmall.render("#" + str(track), True, (200, 200, 200))
         self.display.blit(textTitel,(270,70))
