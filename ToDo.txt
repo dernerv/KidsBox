@@ -7,7 +7,7 @@
     * Fortschrittsanzeige                                   DONE
     * Zurückstezen(Position Stop) (Langes drücken play)     DONE
     * Fehlende oder defekte Positions datei                 DONE
-    * GPIOs benutzen (Buttons)                              InProgress
+    * GPIOs benutzen (Buttons)                              DONE
     * Freigabe des Liederordners
     * OS aufspielen und konfigurieren                       InProgress
 
@@ -18,13 +18,13 @@
     Hardare/Gehäuse
     * SD-Karten besorgen                                    DONE
     * Gehäuseboden in CAD + PI Halter + Verstärker          DONE
-    * Bildschrimhalterung
+    * Bildschrimhalterung                                   DONE
     * Verkabelung
         * Pi Header                                         DONE
-        * Display
-        * Verstärker
-        * Buttons
-    * Schrauben
+        * Display                                           DONE
+        * Verstärker                                        DONE
+        * Buttons                                           DONE
+    * Schrauben                                             DONE
 
         NiceToHave
         * Dämmung

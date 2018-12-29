@@ -1,0 +1,16 @@
+[Unit]
+Description=KidsBox
+After=syslog.target
+
+[Service]
+User=pi
+ExecStart=/usr/bin/sudo /home/pi/KidsBox/kidsBox.py
+WorkingDirectory=/home/pi/KidsBox
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=pygame
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=multi-user.target
+ 
