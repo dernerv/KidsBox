@@ -2,28 +2,36 @@ import pygame
 import sys, signal
 import vlc
 import time
+import platform
 
 from Player import Player
-from buttons import Buttons
 from View import View
 from MusicRepo import MusicRepo
 from time import sleep
+
+if platform.system() != 'Windows':
+    from buttons import Buttons
 
 class Controller:
     def __init__(self, display):
         self.display = display
         self.view = View(self.display)
         self.album_index = 0
+        self.album_selected_index = 0
         self.media_index = 0
         self.media_position = 0.0
         self.media_duration = 0.0
         self.lastUpdate = 0.0
         self.keyDownTime = time.time()
         self.albumMode = True
-        self.rootFolder = "/home/pi/media"
+        if platform.system() != 'Windows':
+            self.rootFolder = "/home/pi/media"
+        else:
+            self.rootFolder = "C:\\Users\\nerv\\sandbox"
         self.busy = False
         self.lastChannel = -1
-        self.buttons = Buttons()
+        if platform.system() != 'Windows':
+            self.buttons = Buttons()
 
     def setup(self):
         self.view.Welcome()
@@ -34,10 +42,10 @@ class Controller:
         self.player.set_event_end_callback(self.media_end_reached)
         self.player.set_event_position_changed_callback(self.media_position_changed)
         self.repo = MusicRepo(self.rootFolder, self.vlcInstance)
+        self.repo.LoadAll()
         self.folders = self.repo.GetAlbums()
-        self.noCoverImage = pygame.image.load("no-cover.png")
-
-        self.buttons.start_thread()
+        if platform.system() != 'Windows':
+            self.buttons.start_thread()
 
     def media_end_reached(self, event):
         #print("end reached")
@@ -49,6 +57,7 @@ class Controller:
         #print("position changed")  
         event = pygame.event.Event(pygame.KEYUP)
         event.key = pygame.K_s
+        event.test = "hallo"
         pygame.event.post(event)
 
     def loop(self):
@@ -70,12 +79,11 @@ class Controller:
                         elif event.key == pygame.K_s :
                             self.SavePosition()
                         elif event.key == pygame.K_ESCAPE :
-                            print("back")
+                            #print("back")
                             self.albumMode = True
                             self.ShowAlbums()
                         elif event.key == pygame.K_p :
-                            print("enter / play-pause")
-                            #if False:
+                            #print("enter / play-pause")
                             if time.time() > self.keyDownTime + 2:
                                 if not self.albumMode:
                                     #print("reset")
@@ -84,24 +92,25 @@ class Controller:
                             else: 
                                 if self.albumMode:
                                     #print("open album")
+                                    self.album_index = self.album_selected_index
                                     fileAndPosition = self.repo.LoadPositionAndFile(self.album_index)
                                     self.media_index = fileAndPosition['fileIndex']
                                     self.media_position = fileAndPosition['position']
                                     self.PlayMediaFile()
                                 else:
-                                    print("toggle play")
+                                    #print("toggle play")
                                     self.player.PlayPause()
                         elif event.key == pygame.K_UP :
-                            print("volume +")
+                            #print("volume +")
                             self.player.VolumeUp()
                         elif event.key == pygame.K_DOWN :
-                            print("volume -")
+                            #print("volume -")
                             self.player.VolumeDown()
                         elif event.key == pygame.K_LEFT :
-                            print("left")
+                            #print("left")
                             if self.albumMode:
-                                if self.album_index > 0:
-                                    self.album_index -= 1
+                                if self.album_selected_index > 0:
+                                    self.album_selected_index -= 1
                                 self.ShowAlbums()
                             else:
                                 if self.media_index > 0:
@@ -109,15 +118,15 @@ class Controller:
                                     self.media_position = 0
                                     self.PlayMediaFile()
                         elif event.key == pygame.K_RIGHT :
-                            print("right")
+                            #print("right")
                             if self.albumMode:
-                                if self.album_index < len(self.folders) - 1:
-                                    self.album_index += 1
+                                if self.album_selected_index < len(self.folders) - 1:
+                                    self.album_selected_index += 1
                                 self.ShowAlbums()
                             else:
                                 self.NextMediaFile()
             except:
-                print("Ohhh no")
+                print("Failed")
                 self.buttons.close()
                 return
                 
@@ -130,17 +139,14 @@ class Controller:
             self.PlayMediaFile()
 
     def PlayMediaFile(self):
-        files = self.repo.GetFiles(self.folders[self.album_index])
-        #if not (len(files) < self.media_index):
-        #    self.media_index = 0
-        fileName = files[self.media_index]
-        meta = self.repo.GetInfo(fileName)
+        files = self.repo.get_mediafiles(self.folders[self.album_index])
+        meta = files[self.media_index]
         image = self.repo.GetCover(self.folders[self.album_index])
         self.media_duration = meta.duration
         if self.media_position > 1.0:
             self.media_position = 0
         self.view.NewMedia(image, meta.title, meta.artist, meta.album, meta.track, meta.duration, self.media_position)
-        self.player.SetFile(fileName, self.media_position)
+        self.player.SetFile(meta.filename, self.media_position)
         self.albumMode = False
 
     def SavePosition(self):
@@ -154,17 +160,17 @@ class Controller:
 
 
     def ShowAlbums(self):
-        centerIndex = self.album_index
+        centerIndex = self.album_selected_index
 
         if centerIndex - 1 < 0:
-            image1 = self.noCoverImage
+            image1 = None
         else:
             image1 = self.repo.GetCover(self.folders[centerIndex -1])
 
         image2 = self.repo.GetCover(self.folders[centerIndex])
 
         if centerIndex + 1 > len(self.folders) - 1:
-            image3 = self.noCoverImage
+            image3 = None
         else:
             image3 = self.repo.GetCover(self.folders[centerIndex + 1])
 

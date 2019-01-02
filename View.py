@@ -10,8 +10,9 @@ class View:
         self.margin = 10
         pygame.font.init() # you have to call this at the start, 
                    # if you want to use this module.
-        self.font = pygame.font.SysFont('Century Gothic', 40)
-        self.fontSmall = pygame.font.SysFont('Century Gothic', 16) 
+        fontname = 'Staatliches' #'Century Gothic'
+        self.font = pygame.font.SysFont(fontname, 55)
+        self.fontSmall = pygame.font.SysFont(fontname, 25) 
         self.frameColor = (255, 255, 255)
     
     def Welcome(self):
@@ -99,13 +100,15 @@ class View:
         frameSize = coverSize + 2
         centerX = self.display.get_width() / 2
         # Cover
-        pygame.draw.rect(self.display, self.frameColor, pygame.Rect(9, 9, frameSize, frameSize))
-        picture = pygame.transform.smoothscale(image1, (coverSize, coverSize))
-        self.display.blit(picture,(10,10))
+        if image1 != None:
+            pygame.draw.rect(self.display, self.frameColor, pygame.Rect(9, 9, frameSize, frameSize))
+            picture = pygame.transform.smoothscale(image1, (coverSize, coverSize))
+            self.display.blit(picture,(10,10))
        
-        pygame.draw.rect(self.display, self.frameColor, pygame.Rect(249, 9, frameSize, frameSize))
-        picture = pygame.transform.smoothscale(image3, (coverSize, coverSize))
-        self.display.blit(picture,(250,10))
+        if image3 != None:
+            pygame.draw.rect(self.display, self.frameColor, pygame.Rect(249, 9, frameSize, frameSize))
+            picture = pygame.transform.smoothscale(image3, (coverSize, coverSize))
+            self.display.blit(picture,(250,10))
 
         centerCoverSize = coverSize + 40
         centerFrame = centerCoverSize + 2
