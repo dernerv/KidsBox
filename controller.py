@@ -84,7 +84,7 @@ class Controller:
                             self.ShowAlbums()
                         elif event.key == pygame.K_p :
                             #print("enter / play-pause")
-                            if time.time() > self.keyDownTime + 2:
+                            if time.time() > self.keyDownTime + 1:
                                 if not self.albumMode:
                                     #print("reset")
                                     self.media_position = 0

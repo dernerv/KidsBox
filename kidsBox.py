@@ -15,7 +15,7 @@ def main():
         pygame.display.set_caption('KidsBox')
     pygame.mouse.set_visible(False)
     
-    print("starting KidBox 1.0 ")
+    print("starting KidBox 1.1")
     control = Controller(display)
     control.setup()
     control.loop()

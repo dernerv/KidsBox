@@ -10,8 +10,8 @@ PLAY_BUTTON = 20
 LEFT_BUTTON = 12
 RIGHT_BUTTON = 16
 
-VOLUME_UP = 6
-VOLUME_DOWN = 13
+VOLUME_UP = 13
+VOLUME_DOWN = 6
 
 BUTTON_LIST = {BACK_BUTTON, PLAY_BUTTON, LEFT_BUTTON, RIGHT_BUTTON, VOLUME_UP, VOLUME_DOWN}
 
@@ -61,4 +61,4 @@ class Buttons:
                         event.key = pygame.K_DOWN
                     pygame.event.post(event)
                     channel = -1
-            sleep(0.06)
+            sleep(0.02)

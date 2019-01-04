@@ -10,9 +10,9 @@ class View:
         self.margin = 10
         pygame.font.init() # you have to call this at the start, 
                    # if you want to use this module.
-        fontname = 'Staatliches' #'Century Gothic'
-        self.font = pygame.font.SysFont(fontname, 55)
-        self.fontSmall = pygame.font.SysFont(fontname, 25) 
+        fontname = 'Didact Gothic' #'Century Gothic' ' Staatliches', 'Didact Gothic'
+        self.font = pygame.font.SysFont(fontname, 45)
+        self.fontSmall = pygame.font.SysFont(fontname, 20) 
         self.frameColor = (255, 255, 255)
     
     def Welcome(self):
