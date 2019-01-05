@@ -51,13 +51,13 @@ class Controller:
         #print("end reached")
         event = pygame.event.Event(pygame.KEYUP)
         event.key = pygame.K_RIGHT
+        event.fileend = True
         pygame.event.post(event)
     
     def media_position_changed(self, event):
         #print("position changed")  
         event = pygame.event.Event(pygame.KEYUP)
         event.key = pygame.K_s
-        event.test = "hallo"
         pygame.event.post(event)
 
     def loop(self):
@@ -124,19 +124,24 @@ class Controller:
                                     self.album_selected_index += 1
                                 self.ShowAlbums()
                             else:
-                                self.NextMediaFile()
+                                self.NextMediaFile(event)
             except:
                 print("Failed")
                 self.buttons.close()
                 return
                 
 
-    def NextMediaFile(self):
+    def NextMediaFile(self, event):
         size = self.repo.GetNumberOfFiles(self.folders[self.album_index])
         if self.media_index + 1 < size:
             self.media_position = 0
             self.media_index += 1
             self.PlayMediaFile()
+        elif hasattr(event, 'fileend'):
+            self.media_position = 0
+            self.media_index = 0
+            self.SavePosition()
+            self.ShowAlbums()
 
     def PlayMediaFile(self):
         files = self.repo.get_mediafiles(self.folders[self.album_index])

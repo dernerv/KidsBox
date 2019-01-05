@@ -61,4 +61,4 @@ class Buttons:
                         event.key = pygame.K_DOWN
                     pygame.event.post(event)
                     channel = -1
-            sleep(0.02)
+            sleep(0.04)

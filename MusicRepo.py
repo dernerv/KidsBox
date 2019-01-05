@@ -1,6 +1,7 @@
 import pygame
 import os
 import json
+from decimal import Decimal
 
 class MusicRepo:
     def __init__(self, rootFolder, vlcInstance):
@@ -26,7 +27,8 @@ class MusicRepo:
     def get_track_no(self, element):
         if element.track == None:
             return 0
-        return element.track
+        return Decimal(element.track)
+
 
     def get_mediafiles(self, foldername):
         if len(self.files_in_album) < 1:

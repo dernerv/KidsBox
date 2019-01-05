@@ -14,6 +14,8 @@ class View:
         self.font = pygame.font.SysFont(fontname, 45)
         self.fontSmall = pygame.font.SysFont(fontname, 20) 
         self.frameColor = (255, 255, 255)
+        self.picture_cache_220 = dict()
+        self.picture_cache_260 = dict()
     
     def Welcome(self):
         textKidsBox = self.font.render('Kids Box', True, (255, 255, 255))
@@ -98,22 +100,37 @@ class View:
         
         coverSize = 220
         frameSize = coverSize + 2
-        centerX = self.display.get_width() / 2
         # Cover
         if image1 != None:
             pygame.draw.rect(self.display, self.frameColor, pygame.Rect(9, 9, frameSize, frameSize))
-            picture = pygame.transform.smoothscale(image1, (coverSize, coverSize))
+            #picture = pygame.transform.smoothscale(image1, (coverSize, coverSize))
+            #picture = pygame.transform.scale(image1, (coverSize, coverSize))
+            picture = self.get_from_cache(image1, coverSize)
             self.display.blit(picture,(10,10))
        
         if image3 != None:
             pygame.draw.rect(self.display, self.frameColor, pygame.Rect(249, 9, frameSize, frameSize))
-            picture = pygame.transform.smoothscale(image3, (coverSize, coverSize))
+            #picture = pygame.transform.smoothscale(image3, (coverSize, coverSize))
+            #picture = pygame.transform.scale(image3, (coverSize, coverSize))
+            picture = self.get_from_cache(image3, coverSize)
+
             self.display.blit(picture,(250,10))
 
         centerCoverSize = coverSize + 40
         centerFrame = centerCoverSize + 2
         pygame.draw.rect(self.display, self.frameColor, pygame.Rect(108, 39, centerFrame, centerFrame))
-        picture = pygame.transform.smoothscale(image2, (centerCoverSize, centerCoverSize))
+        #picture = pygame.transform.smoothscale(image2, (centerCoverSize, centerCoverSize))
+        picture = self.get_from_cache(image2, centerCoverSize)
         self.display.blit(picture,(109,40))
 
         pygame.display.flip()
+
+    def get_from_cache(self, image, size):
+            if size == 220:
+                if not (image in self.picture_cache_220):
+                    self.picture_cache_220[image] = pygame.transform.smoothscale(image, (size, size))
+                return self.picture_cache_220[image]
+            elif size == 260:
+                if not (image in self.picture_cache_260):
+                    self.picture_cache_260[image] = pygame.transform.smoothscale(image, (size, size))
+                return self.picture_cache_260[image]
