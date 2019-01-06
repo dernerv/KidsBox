@@ -17,9 +17,9 @@ class View:
         self.picture_cache_220 = dict()
         self.picture_cache_260 = dict()
     
-    def Welcome(self):
+    def welcome(self):
         textKidsBox = self.font.render('Kids Box', True, (255, 255, 255))
-        textVersion = self.fontSmall.render('Version 1.0', True, (150, 150, 150))
+        textVersion = self.fontSmall.render('Version 1.1', True, (150, 150, 150))
         self.display.fill((0,0,0))
 
         centerX = self.display.get_width() / 2
@@ -37,7 +37,7 @@ class View:
 
         pygame.display.flip()
 
-    def NewMedia(self, image, titel, artist, album, track, position, fulltime):
+    def new_media(self, image, titel, artist, album, track, position, fulltime):
         self.image = image
         self.titel = titel
         self.position = position
@@ -63,9 +63,9 @@ class View:
         self.display.blit(textTitel,(270,160))
 
         pygame.display.flip()
-        self.DrawPositionBar(position, fulltime)
+        self.draw_position_bar(position, fulltime)
     
-    def DrawPositionBar(self, position, fulltime):
+    def draw_position_bar(self, position, fulltime):
         pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, self.display.get_height()-60, self.display.get_width(), 60))
         pygame.draw.rect(self.display, (100, 100, 100), pygame.Rect(15, self.display.get_height()-45, self.display.get_width()-30, 30))
         
@@ -84,17 +84,17 @@ class View:
         self.display.blit(fulltimeText,(self.display.get_width()- (fulltimeText.get_width() + 20), self.display.get_height()-40))
         pygame.display.flip()
 
-    def UpdateTitle(self, titel, position):
+    def update_title(self, titel, position):
         self.titel = titel
         self.position = position
 
-    def UpdatePosition(self, position):
+    def update_position(self, position):
         self.position = position 
 
-    def ShowVolume(self, volume):
+    def show_volume(self, volume):
         self.volume = volume
     
-    def AlbumSelection(self, image1, image2, image3):
+    def album_selection(self, image1, image2, image3):
         self.display.fill((0,0,0))
         pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
         

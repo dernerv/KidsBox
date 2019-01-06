@@ -16,44 +16,44 @@ class Player:
     def set_event_position_changed_callback(self, callback):
         self.event_manager.event_attach(EventType.MediaPlayerPositionChanged, callback)
 
-    def SetFile(self, fileName, position):
+    def set_file(self, fileName, position):
         self.vlcPlayer.stop()
         self.media = self.vlcInstance.media_new(fileName)
         self.vlcPlayer.set_media(self.media)
         self.vlcPlayer.play()
         self.vlcPlayer.set_position(position)
 
-    def PlayPause(self):
+    def play_pause(self):
         if self.vlcPlayer.is_playing():
             self.vlcPlayer.pause()
         else:
             self.vlcPlayer.play()
     
-    def GetPosition(self):
+    def get_position(self):
         return self.vlcPlayer.get_position()
 
-    def IsPlaying(self):
+    def is_playing(self):
         return self.vlcPlayer.is_playing()
 
-    def Stop(self):
+    def stop(self):
         return self.vlcPlayer.stop()
 
-    def Volume(self, volume):
+    def volume(self, volume):
         self.volume = volume
         self.vlcPlayer.audio_set_volume(self.volume)
 
-    def Mute(self, volume):
+    def mute(self, volume):
         self.vlcPlayer.audio_set_volume(0)
 
-    def UnMute(self, volume):
+    def unmute(self, volume):
         self.vlcPlayer.audio_set_volume(self.volume)
 
-    def VolumeUp(self):
+    def volume_up(self):
         if self.volume < 100:
             self.volume += 4
         self.vlcPlayer.audio_set_volume(self.volume)
     
-    def VolumeDown(self):
+    def volume_down(self):
         if self.volume > 0:
             self.volume -= 4
         self.vlcPlayer.audio_set_volume(self.volume)
