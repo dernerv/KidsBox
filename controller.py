@@ -179,5 +179,5 @@ class Controller:
         else:
             image3 = self.repo.get_cover(self.folders[centerIndex + 1])
 
-        self.view.AlbumSelection(image1, image2, image3)
+        self.view.album_selection(image1, image2, image3)
 
