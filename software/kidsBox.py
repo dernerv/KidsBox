@@ -1,13 +1,15 @@
 #! /usr/bin/python
-
+import version
 import pygame
 import os
 import platform
 
 from controller import Controller
 
+
+
 def main():
-    if platform.system() != 'Windows':
+    if 'arm' in platform.processor():
         os.environ["SDL_FBDEV"] = "/dev/fb1"
         display = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
     else:
@@ -15,7 +17,7 @@ def main():
         pygame.display.set_caption('KidsBox')
     pygame.mouse.set_visible(False)
     
-    print("starting KidBox 1.1")
+    print("starting KidBox " + version.__version__)
     control = Controller(display)
     control.setup()
     control.loop()

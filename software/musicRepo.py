@@ -69,7 +69,7 @@ class MusicRepo:
     
     def save_position(self, album_index, media_index, media_position):
         folder = self.get_albums()[album_index]
-        filename = self.rootFolder + "/" + folder + "/" + "position.json"
+        filename = os.path.join(self.rootFolder, folder, "position.json")
         #print("Save into file " + filename)
         with open(filename, "w") as write_file:
             data = {
@@ -81,7 +81,7 @@ class MusicRepo:
     def load_position_and_file(self, album_index):
         try:
             folder = self.get_albums()[album_index]
-            filename = self.rootFolder + "/" + folder + "/" + "position.json"
+            filename = os.path.join(self.rootFolder, folder, "position.json")
             print("Load file " + filename)
             with open(filename, "r") as read_file:
                 return json.load(read_file)

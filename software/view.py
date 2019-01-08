@@ -1,3 +1,4 @@
+import version
 import pygame
 
 COVER_POSITION_X = 15
@@ -19,7 +20,7 @@ class View:
     
     def welcome(self):
         textKidsBox = self.font.render('Kids Box', True, (255, 255, 255))
-        textVersion = self.fontSmall.render('Version 1.1', True, (150, 150, 150))
+        textVersion = self.fontSmall.render('Version ' + version.__version__, True, (150, 150, 150))
         self.display.fill((0,0,0))
 
         centerX = self.display.get_width() / 2

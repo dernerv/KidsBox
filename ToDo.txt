@@ -1,30 +1,7 @@
 
 ## KidsBox ToDo
 
-    Software
-    * Liederauswahl in Album                                DONE
-    * Nach Lied Ende weiterspielen                          DONE
-    * Fortschrittsanzeige                                   DONE
-    * Zurückstezen(Position Stop) (Langes drücken play)     DONE
-    * Fehlende oder defekte Positions datei                 DONE
-    * GPIOs benutzen (Buttons)                              DONE
-    * Freigabe des Liederordners
-    * OS aufspielen und konfigurieren                       InProgress
+    * Volume anzeige
+    * Vor/Zurückspulen (Langes drücken vor oder zurück)                            
 
-        NiceToHave
-        * Volume anzeige
-        * Vor/Zurückspulen (Langes drücken vor oder zurück)                            
-
-    Hardare/Gehäuse
-    * SD-Karten besorgen                                    DONE
-    * Gehäuseboden in CAD + PI Halter + Verstärker          DONE
-    * Bildschrimhalterung                                   DONE
-    * Verkabelung
-        * Pi Header                                         DONE
-        * Display                                           DONE
-        * Verstärker                                        DONE
-        * Buttons                                           DONE
-    * Schrauben                                             DONE
-
-        NiceToHave
-        * Dämmung
+    * Dämmung

@@ -41,7 +41,6 @@ class Buttons:
                     event = pygame.event.Event(pygame.KEYDOWN)
                     pygame.event.post(event)
                     sleep(0.1)
-                    #return
 
             for button in BUTTON_LIST:
                 if button == channel and GPIO.input(button):

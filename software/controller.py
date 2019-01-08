@@ -3,13 +3,15 @@ import sys, signal
 import vlc
 import time
 import platform
+import os
 
 from player import Player
 from view import View
 from musicRepo import MusicRepo
 from time import sleep
+from os.path import expanduser
 
-if platform.system() != 'Windows':
+if 'arm' in platform.processor():
     from buttons import Buttons
 
 class Controller:
@@ -24,20 +26,18 @@ class Controller:
         self.lastUpdate = 0.0
         self.keyDownTime = time.time()
         self.albumMode = True
-        if platform.system() != 'Windows':
-            self.rootFolder = "/home/pi/media"
-        else:
-            self.rootFolder = "C:\\Users\\nerv\\sandbox"
+        home = expanduser("~")
+        self.rootFolder = os.path.join(home, "media")
         self.busy = False
         self.lastChannel = -1
-        if platform.system() != 'Windows':
-            self.buttons = buttons()
+        if 'arm' in platform.processor():
+            self.buttons = Buttons()
 
     def setup(self):
         self.view.welcome()
         self.vlcInstance = vlc.Instance()
         self.player = Player(self.vlcInstance)
-        self.player.volume(60)
+        self.player.set_volume(60)
 
         self.player.set_event_end_callback(self.media_end_reached)
         self.player.set_event_position_changed_callback(self.media_position_changed)
