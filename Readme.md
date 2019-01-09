@@ -1,5 +1,14 @@
 # KidsBox - a music box for kids 
 
+KidsBox is a simple music player for kids where they have all their favorit music and audio books in one place.
+
+### Features:
+* display to select album or audio book
+* HW buttons for VOLUME (+,-) and ALBUMS, BACK, PLAY and FORWARD
+* last postion is stored in the album
+* samba folder to add, delete or update albums/audio books (WLAN access needed)
+* software runs without hardware and can be tested and changed on desktop system 
+
 ## BOM
 * Raspberry Pi Zero wh
 * Adafruit I2S 3W Class D Amplifier
