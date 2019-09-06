@@ -6,8 +6,6 @@ import platform
 
 from controller import Controller
 
-
-
 def main():
     if 'arm' in platform.processor():
         os.environ["SDL_FBDEV"] = "/dev/fb1"
@@ -18,7 +16,7 @@ def main():
     pygame.mouse.set_visible(False)
     
     print("starting KidBox " + version.__version__)
-    control = Controller(display)
+    control = Controller(displa)
     control.setup()
     control.loop()
     pygame.quit()

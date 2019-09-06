@@ -58,13 +58,14 @@ class MusicRepo:
         if foldername in self.Covers:
             return self.Covers[foldername]
         subfolder = os.path.join(self.rootFolder, foldername)
-        for name in os.listdir(subfolder):
-            fileName = os.path.join(subfolder, name)
-            if os.path.isfile(fileName):
-                if (name.endswith(".png")):
-                    cover = pygame.image.load(fileName)
-                    self.Covers[foldername] = cover
-                    return cover
+
+        #for name in os.listdir(subfolder):
+        fileName = os.path.join(subfolder, "cover.png")
+        if os.path.isfile(fileName):
+                #if (name.endswith(".png")):
+            cover = pygame.image.load(fileName)
+            self.Covers[foldername] = cover
+            return cover
         return self.noCoverImage
     
     def save_position(self, album_index, media_index, media_position):

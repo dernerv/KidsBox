@@ -44,7 +44,7 @@ class Controller:
         self.repo = MusicRepo(self.rootFolder, self.vlcInstance)
         self.repo.load_all()
         self.folders = self.repo.get_albums()
-        if platform.system() != 'Windows':
+        if 'arm' in platform.processor():
             self.buttons.start_thread()
 
     def media_end_reached(self, event):

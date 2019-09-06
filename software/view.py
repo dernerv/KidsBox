@@ -17,6 +17,7 @@ class View:
         self.frameColor = (255, 255, 255)
         self.picture_cache_220 = dict()
         self.picture_cache_260 = dict()
+        self.showAlbum = False
     
     def welcome(self):
         textKidsBox = self.font.render('Kids Box', True, (255, 255, 255))
@@ -43,7 +44,8 @@ class View:
         self.titel = titel
         self.position = position
         self.artist = artist
-        
+        self.showAlbum = False
+
         pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
         pygame.draw.rect(self.display, self.frameColor, pygame.Rect(COVER_POSITION_X-1, COVER_POSITION_Y-1, 242, 242))
         
@@ -96,9 +98,11 @@ class View:
         self.volume = volume
     
     def album_selection(self, image1, image2, image3):
-        self.display.fill((0,0,0))
-        pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
-        
+        if not self.showAlbum:
+            self.display.fill((0,0,0))
+            pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(0, 0, self.display.get_width(), self.display.get_height()-60))
+        self.showAlbum = True
+
         coverSize = 220
         frameSize = coverSize + 2
         # Cover
@@ -108,6 +112,8 @@ class View:
             #picture = pygame.transform.scale(image1, (coverSize, coverSize))
             picture = self.get_from_cache(image1, coverSize)
             self.display.blit(picture,(10,10))
+        else:
+            pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(9, 9, frameSize, frameSize))
        
         if image3 != None:
             pygame.draw.rect(self.display, self.frameColor, pygame.Rect(249, 9, frameSize, frameSize))
@@ -116,7 +122,8 @@ class View:
             picture = self.get_from_cache(image3, coverSize)
 
             self.display.blit(picture,(250,10))
-
+        else:
+            pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(249, 9, frameSize, frameSize))      
         centerCoverSize = coverSize + 40
         centerFrame = centerCoverSize + 2
         pygame.draw.rect(self.display, self.frameColor, pygame.Rect(108, 39, centerFrame, centerFrame))
