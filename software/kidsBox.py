@@ -16,7 +16,7 @@ def main():
     pygame.mouse.set_visible(False)
     
     print("starting KidBox " + version.__version__)
-    control = Controller(displa)
+    control = Controller(display)
     control.setup()
     control.loop()
     pygame.quit()

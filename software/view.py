@@ -15,6 +15,8 @@ class View:
         self.font = pygame.font.SysFont(fontname, 45)
         self.fontSmall = pygame.font.SysFont(fontname, 20) 
         self.frameColor = (255, 255, 255)
+        self.frameColorAlpha = (125, 125, 125)
+        self.frameInnerColor = (0, 0, 0)
         self.picture_cache_220 = dict()
         self.picture_cache_260 = dict()
         self.showAlbum = False
@@ -107,20 +109,24 @@ class View:
         frameSize = coverSize + 2
         # Cover
         if image1 != None:
-            pygame.draw.rect(self.display, self.frameColor, pygame.Rect(9, 9, frameSize, frameSize))
+            pygame.draw.rect(self.display, self.frameColorAlpha, pygame.Rect(9, 9, frameSize, frameSize))
+            pygame.draw.rect(self.display, self.frameInnerColor, pygame.Rect(10, 10, coverSize, coverSize))
             #picture = pygame.transform.smoothscale(image1, (coverSize, coverSize))
             #picture = pygame.transform.scale(image1, (coverSize, coverSize))
             picture = self.get_from_cache(image1, coverSize)
+            picture.set_alpha(70)    
             self.display.blit(picture,(10,10))
         else:
             pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(9, 9, frameSize, frameSize))
        
         if image3 != None:
-            pygame.draw.rect(self.display, self.frameColor, pygame.Rect(249, 9, frameSize, frameSize))
+            pygame.draw.rect(self.display, self.frameColorAlpha, pygame.Rect(249, 9, frameSize, frameSize))
+            pygame.draw.rect(self.display, self.frameInnerColor, pygame.Rect(250, 10, coverSize, coverSize))
+
             #picture = pygame.transform.smoothscale(image3, (coverSize, coverSize))
             #picture = pygame.transform.scale(image3, (coverSize, coverSize))
             picture = self.get_from_cache(image3, coverSize)
-
+            picture.set_alpha(70)    
             self.display.blit(picture,(250,10))
         else:
             pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(249, 9, frameSize, frameSize))      
