@@ -7,7 +7,7 @@ import platform
 from controller import Controller
 
 def main():
-    if 'arm' in platform.processor():
+    if 'arm' in platform.machine():
         os.environ["SDL_FBDEV"] = "/dev/fb1"
         display = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
     else:

@@ -11,7 +11,7 @@ from musicRepo import MusicRepo
 from time import sleep
 from os.path import expanduser
 
-if 'arm' in platform.processor():
+if 'arm' in platform.machine():
     from buttons import Buttons
 
 class Controller:
@@ -30,7 +30,7 @@ class Controller:
         self.rootFolder = os.path.join(home, "media")
         self.busy = False
         self.lastChannel = -1
-        if 'arm' in platform.processor():
+        if 'arm' in platform.machine():
             self.buttons = Buttons()
 
     def setup(self):
@@ -44,7 +44,7 @@ class Controller:
         self.repo = MusicRepo(self.rootFolder, self.vlcInstance)
         self.repo.load_all()
         self.folders = self.repo.get_albums()
-        if 'arm' in platform.processor():
+        if 'arm' in platform.machine():
             self.buttons.start_thread()
 
     def media_end_reached(self, event):
