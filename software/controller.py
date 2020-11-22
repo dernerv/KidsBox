@@ -127,7 +127,8 @@ class Controller:
                                 self.next_media_file(event)
             except:
                 print("Failed")
-                self.buttons.close()
+                if 'arm' in platform.machine():
+                    self.buttons.close()
                 return
                 
 

@@ -1,7 +1,11 @@
 import pygame
-import os
+import os, sys
+from PIL import Image
 import json
 from decimal import Decimal
+#from tinydb import TinyDB, Query
+
+
 
 class MusicRepo:
     def __init__(self, rootFolder, vlcInstance):
@@ -11,18 +15,26 @@ class MusicRepo:
         self.Covers = dict()
         self.files_in_album = dict()
         self.file_info = dict()
+        
+        #self.db = TinyDB("db.json")
+        #print(self.db.search(Query()['file'].exists()))
 
 
     def load_all(self):
         self.noCoverImage = pygame.image.load("no-cover.png")
+        # if (len(self.db) > 1)
+
+        # else
         folders = self.get_albums()
         for folder in folders:
             files = self.get_files(folder)
             infos = []
             for filename in files:
                 infos.append(self.get_info(filename))
+                
             infos.sort(key=self.get_track_no)
             self.files_in_album[folder] = infos
+        
 
     def get_track_no(self, element):
         if element.track == None:
@@ -49,24 +61,31 @@ class MusicRepo:
             if os.path.isfile(fileName):
                 if (name.endswith(".mp3")):
                     files.append(fileName)
+                    #self.db.insert({'file': fileName, 'folder' : foldername})
+
+                #if (name == "cover.png"):
+                 #   self.db.insert({'cover': fileName, 'folder' : foldername})
         return files
 
     def get_num_of_files(self, foldername):    
         return len(self.get_files(foldername))
 
     def get_cover(self, foldername):
-        if foldername in self.Covers:
-            return self.Covers[foldername]
         subfolder = os.path.join(self.rootFolder, foldername)
-
-        #for name in os.listdir(subfolder):
         fileName = os.path.join(subfolder, "cover.png")
-        if os.path.isfile(fileName):
-                #if (name.endswith(".png")):
-            cover = pygame.image.load(fileName)
-            self.Covers[foldername] = cover
-            return cover
-        return self.noCoverImage
+        return fileName
+        # if foldername in self.Covers:
+        #     return self.Covers[foldername]
+        # subfolder = os.path.join(self.rootFolder, foldername)
+
+        # #for name in os.listdir(subfolder):
+        # fileName = os.path.join(subfolder, "cover.png")
+        # if os.path.isfile(fileName):
+        #         #if (name.endswith(".png")):
+        #     cover = pygame.image.load(fileName)
+        #     self.Covers[foldername] = cover
+        #     return cover
+        # return self.noCoverImage
     
     def save_position(self, album_index, media_index, media_position):
         folder = self.get_albums()[album_index]
