@@ -27,7 +27,7 @@ class Controller:
         self.keyDownTime = time.time()
         self.albumMode = True
         home = expanduser("~")
-        self.rootFolder = os.path.join(home, "media")
+        self.rootFolder = "/home/pi/media" #os.path.join(home, "media")
         self.busy = False
         self.lastChannel = -1
         if 'arm' in platform.machine():
@@ -37,7 +37,7 @@ class Controller:
         self.view.welcome()
         self.vlcInstance = vlc.Instance()
         self.player = Player(self.vlcInstance)
-        self.player.set_volume(60)
+        self.player.set_volume(36)
 
         self.player.set_event_end_callback(self.media_end_reached)
         self.player.set_event_position_changed_callback(self.media_position_changed)
